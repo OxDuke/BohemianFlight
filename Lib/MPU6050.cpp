@@ -64,8 +64,8 @@ void MPU6050::initialize() {
     setClockSource(MPU6050_CLOCK_PLL_XGYRO);
 //    setFullScaleGyroRange(MPU6050_GYRO_FS_250);
     setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
-//    setFullScaleAccelRange(MPU6050_ACCEL_FS_2);
-    setFullScaleAccelRange(MPU6050_ACCEL_FS_16);
+    setFullScaleAccelRange(MPU6050_ACCEL_FS_2);
+//    setFullScaleAccelRange(MPU6050_ACCEL_FS_16);
 //    setSleepEnabled(false); // thanks to Jack Elston for pointing this one out!
     
     // If you have GY-86 or GY-87 module.
