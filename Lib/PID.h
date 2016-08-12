@@ -47,10 +47,10 @@ private:
     //maxium value of I component
     int16_t _Imax;
 
-    float  _integrator;///< I component stores here
-    float _lastError;///< last error for derivative
-    float _lastDerivative;///< last derivative for low-pass filter
-    uint32_t _lastT;///< last time get_pid() was called in millis
+    float  _integrator; // I component stores here
+    float _lastError;  //last error for derivative
+    float _lastDerivative; // last derivative for low-pass filter
+    uint32_t _lastT; // last time get_pid() was called in millis
 
     /**
      * Low pass filter cut frequency for derivative calculation.

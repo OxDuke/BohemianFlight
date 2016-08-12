@@ -1,7 +1,6 @@
 
 #include "PID.h"
 
-
 float PID::getPID(float error, float scaler)
 {
   uint32_t  currentT = micros(); //in microseconds
@@ -59,7 +58,7 @@ float PID::getPID(float error, float scaler)
 
   // discrete low pass filter, cuts out the
   // high frequency noise that can drive the controller crazy
-  float RC = 1 / (2 * PI * _fCut);
+  static float RC = 1 / (2 * PI * _fCut);
   derivative = _lastDerivative +
                ((deltaTime / (RC + deltaTime)) *
                 (derivative - _lastDerivative));

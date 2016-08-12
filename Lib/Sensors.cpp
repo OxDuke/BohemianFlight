@@ -42,19 +42,31 @@ void Sensors::initialize()
 
 void Sensors::calibarateAll()
 {
-	delay(1000);
-	Serial.println("Calibrating sensors in 1 secs...");
-	delay(1000);
+	delay(500);
+	Serial.println("Calibrating sensors in 500 milisecs...");
+	delay(500);
 
 	Serial.println("Calibrating ACC & Gyro...");
+
+	// reset offsets
+	accelgyro.setXAccelOffset(0);
+	accelgyro.setYAccelOffset(0);
+	accelgyro.setZAccelOffset(0);
+	accelgyro.setXGyroOffset(0);
+	accelgyro.setYGyroOffset(0);
+	accelgyro.setZGyroOffset(0);
 
 	float axCalib = 0.0f, ayCalib = 0.0f, azCalib = 0.0f;
 	float gxCalib = 0.0f, gyCalib = 0.0f, gzCalib = 0.0f;
 
+	//discard the 100 readings
+	for (uint16_t i = 0; i < 100 ; ++i)
+		accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+
 	//ACC Gyro calibrate
 	//ACC Sensitivity: 16,384 LSB/g
 	//Gyro Sensitivity: 16.4LSB/(º/s)
-	for (uint16_t i = 0; i < 400 ; ++i)
+	for (uint16_t i = 0; i < 2000 ; ++i)
 	{
 		accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 		axCalib += ax;
@@ -64,14 +76,19 @@ void Sensors::calibarateAll()
 		gxCalib += gx;
 		gyCalib += gy;
 		gzCalib += gz;
-	}
-//	axOffset = 1.0 * 16384 - (int16_t)(axCalib / 400);
-//	ayOffset = 0 - (int16_t)(ayCalib / 400);
-//	azOffset = 0 - (int16_t)(azCalib / 400);
 
-	gxOffset = 0 - (int16_t)(gxCalib / 400);
-	gyOffset = 0 - (int16_t)(gyCalib / 400);
-	gzOffset = 0 - (int16_t)(gzCalib / 400);
+		//delay a little while, or we would probably reading
+		//the same value
+		delay(4);
+	}
+
+	axOffset = 0 - (int16_t)(axCalib / 2000);
+	ayOffset = 0 - (int16_t)(ayCalib / 2000);
+	azOffset = 1.0 * 16384 - (int16_t)(azCalib / 2000);
+
+	gxOffset = 0 - (int16_t)(gxCalib / 2000);
+	gyOffset = 0 - (int16_t)(gyCalib / 2000);
+	gzOffset = 0 - (int16_t)(gzCalib / 2000);
 
 	//MAG calibrate
 	Serial.println("Calibrating MAG...");
